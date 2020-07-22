@@ -6,12 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./app.js localhost 8000",
-    "start": "npm --prefix ./client run build && node app.js"
+    "start": "node app.js"
   },
   "author": "paletskykh_mykyta",
   "license": "ISC",
   "dependencies": {
-    "@angular/cli": "^10.0.3",
     "express": "^4.17.1",
     "mongoose": "^5.9.25",
     "nodemon": "^2.0.4"
