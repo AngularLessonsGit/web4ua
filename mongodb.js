@@ -9,13 +9,16 @@ async function connect() {
 }
 
 const UsersSchema = new mongo.Schema({
-    name: {
+    userName: {
         type: String,
         required: true,
     },
-    password: {
+    userPwd: {
         type: String,
         required: true,
+    },
+    keyword: {
+        type: String,
     }
 });
 
