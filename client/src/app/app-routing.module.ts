@@ -3,15 +3,13 @@ import {Routes, RouterModule} from '@angular/router';
 import {HtmlComponent} from './components/html/html.component';
 import {CssComponent} from './components/css/css.component';
 import {JsComponent} from './components/js/js.component';
-import {FrontendComponent} from './components/frontend/frontend.component';
-import {BackendComponent} from './components/backend/backend.component';
+import {AddPostComponent} from './components/add-post/add-post.component';
 
 const routes: Routes = [
   {path: '', component: HtmlComponent},
   {path: 'css', component: CssComponent},
   {path: 'js', component: JsComponent},
-  {path: 'frontend', component: FrontendComponent},
-  {path: 'backend', component: BackendComponent},
+  {path: 'add', component: AddPostComponent},
   {path: '**', component: HtmlComponent}
 ];
 

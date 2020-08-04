@@ -3,7 +3,8 @@ import {
   MetaReducer
 } from '@ngrx/store';
 import {environment} from '../../environments/environment';
-import {AuthState, authReducer, authNode} from './auth/auth.reducer';
+import {authReducer, authNode} from './auth/auth.reducer';
+import {AuthState} from '../interfaces/auth-state';
 
 
 export interface State {

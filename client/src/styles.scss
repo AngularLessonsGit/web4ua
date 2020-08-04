@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
 
 body {
   margin: 0;
@@ -8,7 +10,7 @@ body {
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  color: #fcfcfc;
+  color: #cecece;
   background: url(assets/loginbg.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -24,7 +26,7 @@ input,
 input:focus {
   outline: none;
   outline-offset: unset;
-  color: #fcfcfc;
+  color: #cecece;
 }
 
 input, button {
@@ -36,7 +38,7 @@ input, button {
 
 @-webkit-keyframes autofill {
   to {
-    color: #fcfcfc;
+    color: #cecece;
     background: #080808;
   }
 }
@@ -51,7 +53,7 @@ button {
   padding: 10px 20px;
   background-image: linear-gradient(#2a2a2a, #131313);
   cursor: pointer;
-  color: #fcfcfc;
+  color: #cecece;
 }
 
 input[type="button"]:hover,
@@ -91,11 +93,20 @@ form {
   border-color: #217926;
 }
 
+a {
+  text-decoration: none;
+  color: #cecece;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 
 svg {
   height: 35px;
   width: 35px;
-  fill: #fcfcfc;
+  fill: #cecece;
 }
 
 svg:hover {
@@ -123,7 +134,11 @@ svg:hover {
   margin-top: 25px;
 }
 
-a {
-  text-decoration: none;
-  color: #fcfcfc;
+.p-rel {
+  position: relative;
+}
+
+
+.modal-dialog {
+  margin: 0;
 }
