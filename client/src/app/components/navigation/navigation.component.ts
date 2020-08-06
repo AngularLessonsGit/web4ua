@@ -5,7 +5,6 @@ import {AuthState} from '../../interfaces/auth-state';
 import {Observable} from 'rxjs';
 import {selectIsAdmin, selectIsLogin, selectUserName} from 'src/app/reducers/auth/auth.selectors';
 import {LocalStorageService} from '../../services/local-storage.service';
-import {User} from '../../interfaces/user';
 
 @Component({
   selector: 'app-navigation',
@@ -26,13 +25,9 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.localStorageService.getItem('login')) {
-      const user: User = {
-        userName: this.localStorageService.getItem('login'),
-        userPwd: this.localStorageService.getItem('password'),
-        isAdmin: !!this.localStorageService.getItem('isAdmin'),
-      };
-      this.store$.dispatch(new AuthLoginSuccessAction(user));
+    const user = this.localStorageService.getItem('ad_23');
+    if (user) {
+      this.store$.dispatch(new AuthLoginSuccessAction(JSON.parse(user)));
     }
   }
 

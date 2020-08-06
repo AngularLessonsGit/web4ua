@@ -21,6 +21,7 @@ import {of} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModalComponent} from './components/modal/modal.component';
 import {LocalStorageService} from './services/local-storage.service';
+import * as CryptoTs from 'crypto-ts';
 
 @Injectable()
 export class AppEffects {
@@ -29,7 +30,8 @@ export class AppEffects {
     private userService: UserService,
     private errorService: ErrorService,
     private modalService: NgbModal,
-    private localStorageService: LocalStorageService) {
+    private localStorageService: LocalStorageService
+  ) {
   }
 
   @Effect()
@@ -44,9 +46,7 @@ export class AppEffects {
           return [new AuthLoginErrorAction()];
         } else {
           modalRef.componentInstance.message = `Вітаємо дома ${res.user.userName}`;
-          this.localStorageService.setItem('login', res.user.userName);
-          this.localStorageService.setItem('password', res.user.userPwd);
-          this.localStorageService.setItem('isAdmin', `${!!res.user.isAdmin}`);
+          this.localStorageService.setItem('ad_23', JSON.stringify(res.user));
           return [
             new AuthLoginSuccessAction(res.user),
             new AuthFormResetAction(),
@@ -102,9 +102,7 @@ export class AppEffects {
       }),
       map((result) => {
         if (result) {
-          this.localStorageService.removeItem('login');
-          this.localStorageService.removeItem('password');
-          this.localStorageService.removeItem('isAdmin');
+          this.localStorageService.removeItem('ad_23');
           return new AuthExitSuccessAction();
         } else {
           return new AuthExitCancelAction();

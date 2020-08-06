@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as CryptoTs from 'crypto-ts';
 
 @Injectable({
   providedIn: 'root'
@@ -8,17 +9,17 @@ export class LocalStorageService {
   constructor() { }
 
   getItem(key: string) {
-    if (!key) {
+    if (!key || !localStorage.getItem(key)) {
       return;
     }
-    return localStorage.getItem(key);
+    return CryptoTs.AES.decrypt(localStorage.getItem(key), 'web4ua').toString(CryptoTs.enc.Utf8);
   }
 
   setItem(key: string, value: string) {
     if (!key || !value) {
       return;
     }
-    localStorage.setItem(key, value);
+    localStorage.setItem(key, CryptoTs.AES.encrypt(value, 'web4ua').toString());
   }
 
   removeItem(key: string) {

@@ -39,6 +39,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_css_css_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/css/css.component */ "./src/app/components/css/css.component.ts");
 /* harmony import */ var _components_js_js_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/js/js.component */ "./src/app/components/js/js.component.ts");
 /* harmony import */ var _components_add_post_add_post_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/add-post/add-post.component */ "./src/app/components/add-post/add-post.component.ts");
+/* harmony import */ var _services_auth_guard_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/auth-guard.service */ "./src/app/services/auth-guard.service.ts");
+
 
 
 
@@ -51,7 +53,7 @@ const routes = [
     { path: '', component: _components_html_html_component__WEBPACK_IMPORTED_MODULE_2__["HtmlComponent"] },
     { path: 'css', component: _components_css_css_component__WEBPACK_IMPORTED_MODULE_3__["CssComponent"] },
     { path: 'js', component: _components_js_js_component__WEBPACK_IMPORTED_MODULE_4__["JsComponent"] },
-    { path: 'add', component: _components_add_post_add_post_component__WEBPACK_IMPORTED_MODULE_5__["AddPostComponent"] },
+    { path: 'add', component: _components_add_post_add_post_component__WEBPACK_IMPORTED_MODULE_5__["AddPostComponent"], canActivate: [_services_auth_guard_service__WEBPACK_IMPORTED_MODULE_6__["AuthGuardService"]] },
     { path: '**', component: _components_html_html_component__WEBPACK_IMPORTED_MODULE_2__["HtmlComponent"] }
 ];
 class AppRoutingModule {
@@ -160,9 +162,7 @@ class AppEffects {
             }
             else {
                 modalRef.componentInstance.message = `Вітаємо дома ${res.user.userName}`;
-                this.localStorageService.setItem('login', res.user.userName);
-                this.localStorageService.setItem('password', res.user.userPwd);
-                this.localStorageService.setItem('isAdmin', `${!!res.user.isAdmin}`);
+                this.localStorageService.setItem('ad_23', JSON.stringify(res.user));
                 return [
                     new _reducers_auth_auth_actions__WEBPACK_IMPORTED_MODULE_4__["AuthLoginSuccessAction"](res.user),
                     new _reducers_auth_auth_actions__WEBPACK_IMPORTED_MODULE_4__["AuthFormResetAction"](),
@@ -198,9 +198,7 @@ class AppEffects {
             return modalRef.result;
         }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((result) => {
             if (result) {
-                this.localStorageService.removeItem('login');
-                this.localStorageService.removeItem('password');
-                this.localStorageService.removeItem('isAdmin');
+                this.localStorageService.removeItem('ad_23');
                 return new _reducers_auth_auth_actions__WEBPACK_IMPORTED_MODULE_4__["AuthExitSuccessAction"]();
             }
             else {
@@ -1153,13 +1151,9 @@ class NavigationComponent {
         this.showHideSubMenu = false;
     }
     ngOnInit() {
-        if (this.localStorageService.getItem('login')) {
-            const user = {
-                userName: this.localStorageService.getItem('login'),
-                userPwd: this.localStorageService.getItem('password'),
-                isAdmin: !!this.localStorageService.getItem('isAdmin'),
-            };
-            this.store$.dispatch(new _reducers_auth_auth_actions__WEBPACK_IMPORTED_MODULE_2__["AuthLoginSuccessAction"](user));
+        const user = this.localStorageService.getItem('ad_23');
+        if (user) {
+            this.store$.dispatch(new _reducers_auth_auth_actions__WEBPACK_IMPORTED_MODULE_2__["AuthLoginSuccessAction"](JSON.parse(user)));
         }
     }
     openAuth() {
@@ -1546,6 +1540,44 @@ const metaReducers = !_environments_environment__WEBPACK_IMPORTED_MODULE_0__["en
 
 /***/ }),
 
+/***/ "./src/app/services/auth-guard.service.ts":
+/*!************************************************!*\
+  !*** ./src/app/services/auth-guard.service.ts ***!
+  \************************************************/
+/*! exports provided: AuthGuardService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthGuardService", function() { return AuthGuardService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
+/* harmony import */ var _reducers_auth_auth_selectors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../reducers/auth/auth.selectors */ "./src/app/reducers/auth/auth.selectors.ts");
+
+
+
+
+
+class AuthGuardService {
+    constructor(store$) {
+        this.store$ = store$;
+    }
+    canActivate() {
+        return this.store$.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["select"])(_reducers_auth_auth_selectors__WEBPACK_IMPORTED_MODULE_2__["selectIsAdmin"]));
+    }
+}
+AuthGuardService.ɵfac = function AuthGuardService_Factory(t) { return new (t || AuthGuardService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"])); };
+AuthGuardService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: AuthGuardService, factory: AuthGuardService.ɵfac, providedIn: 'root' });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AuthGuardService, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
+        args: [{
+                providedIn: 'root'
+            }]
+    }], function () { return [{ type: _ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"] }]; }, null); })();
+
+
+/***/ }),
+
 /***/ "./src/app/services/error.service.ts":
 /*!*******************************************!*\
   !*** ./src/app/services/error.service.ts ***!
@@ -1605,21 +1637,23 @@ ErrorService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInje
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return LocalStorageService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var crypto_ts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! crypto-ts */ "./node_modules/crypto-ts/__ivy_ngcc__/esm2015/crypto-ts.js");
+
 
 
 class LocalStorageService {
     constructor() { }
     getItem(key) {
-        if (!key) {
+        if (!key || !localStorage.getItem(key)) {
             return;
         }
-        return localStorage.getItem(key);
+        return crypto_ts__WEBPACK_IMPORTED_MODULE_1__["AES"].decrypt(localStorage.getItem(key), 'web4ua').toString(crypto_ts__WEBPACK_IMPORTED_MODULE_1__["enc"].Utf8);
     }
     setItem(key, value) {
         if (!key || !value) {
             return;
         }
-        localStorage.setItem(key, value);
+        localStorage.setItem(key, crypto_ts__WEBPACK_IMPORTED_MODULE_1__["AES"].encrypt(value, 'web4ua').toString());
     }
     removeItem(key) {
         if (!key) {
